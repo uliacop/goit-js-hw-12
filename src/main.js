@@ -70,7 +70,7 @@ async function submitHandle(e) {
     }
     if (perPage * pageCounter >= totalHits) {
       hideLoadMoreBtn();
-      endList()
+      endList();
     }
   } catch (error) {
     console.error('Error fetching images:', error);
