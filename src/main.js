@@ -18,7 +18,7 @@ export const lightbox = new SimpleLightbox('.gallery a', {
   captionDelay: 250,
 });
 
-let searchTerm = '';
+let searchTerm;
 let pageCounter = 1;
 const perPage = 15;
 
@@ -91,14 +91,12 @@ refs.load.addEventListener('click', async () => {
     }
     const images = await fetchImg(searchTerm, pageCounter, perPage);
     const totalHits = images.totalHits;
-
     renderImg(images.hits);
     showLoader();
     if (perPage * pageCounter >= totalHits) {
       hideLoadMoreBtn();
       endList();
     }
-
     const galleryCardHeight =
       refs.galleryList.firstElementChild.getBoundingClientRect().height;
     window.scrollBy({ top: galleryCardHeight * 3, behavior: 'smooth' });
