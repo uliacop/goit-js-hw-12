@@ -83,76 +83,28 @@ async function submitHandle(e) {
     hideLoader();
   }
 }
-
-refs.load.style.display = 'none';
-
-async function loadMoreImages() {
+  refs.loader.addEventListener('click', async () => {
   try {
-    pageCounter += 1;
-    showLoader();
+    if (refs.load) {
+      pageCounter += 1;
+      showLoader()
+    }
     const images = await fetchImg(searchTerm, pageCounter, perPage);
     const totalHits = images.totalHits;
-
     renderImg(images.hits);
+    showLoader();
     if (perPage * pageCounter >= totalHits) {
+      hideLoadMoreBtn();
       endList();
     }
-    const galleryCardHeight = refs.galleryList.firstElementChild.getBoundingClientRect().height;
+    const galleryCardHeight =
+      refs.galleryList.firstElementChild.getBoundingClientRect().height;
     window.scrollBy({ top: galleryCardHeight * 3, behavior: 'smooth' });
   } catch (error) {
     console.error('Error fetching more images:', error);
     iziToast.error({
       title: 'Error',
       message: `Error fetching more images: ${error}`,
-    });
-  } finally {
-    hideLoader();
-  }
-}
-
-refs.searchForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  searchTerm = refs.inputElement.value.trim();
-  pageCounter = 1;
-  refs.galleryList.innerHTML = '';
-  if (searchTerm === '') {
-    iziToast.error({
-      title: 'Error',
-      message: 'Please enter a search term.',
-      position: 'topRight',
-    });
-    hideLoadMoreBtn();
-    return;
-  }
-  showLoader();
-  try {
-    const images = await fetchImg(searchTerm, pageCounter, perPage);
-    const totalHits = images.totalHits;
-    if (images.hits.length === 0) {
-      refs.galleryList.innerHTML = '';
-      iziToast.info({
-        title: 'Info',
-        message:
-          'Sorry, there are no images matching your search query. Please try again!',
-        position: 'topRight',
-      });
-      hideLoadMoreBtn();
-      return;
-    } else {
-      renderImg(images.hits);
-      refs.inputElement.value = '';
-      showLoader();
-    }
-    if (perPage * pageCounter >= totalHits) {
-      hideLoadMoreBtn();
-      endList();
-    }
-  } catch (error) {
-    console.error('Error fetching images:', error);
-    iziToast.error({
-      title: 'Error',
-      message: 'Failed to fetch images. Please try again later.',
-      position: 'topRight',
     });
   } finally {
     hideLoader();
