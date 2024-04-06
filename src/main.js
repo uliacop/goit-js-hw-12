@@ -10,7 +10,7 @@ export const refs = {
   inputElement: document.querySelector('.search-input'),
   load: document.querySelector('.load'),
   galleryList: document.querySelector('.gallery'),
-  loader: document.querySelector('.loader')
+  loader: document.querySelector('.loader'),
 };
 
 export const lightbox = new SimpleLightbox('.gallery a', {
@@ -18,11 +18,10 @@ export const lightbox = new SimpleLightbox('.gallery a', {
   captionDelay: 250,
 });
 
+hideLoader();
 let searchTerm;
 let pageCounter = 1;
 const perPage = 15;
-
-hideLoader();
 
 refs.searchForm.addEventListener('submit', submitHandle);
 
@@ -83,7 +82,6 @@ refs.load.addEventListener('click', async () => {
     const images = await fetchImg(searchTerm, pageCounter, perPage);
     const totalHits = images.totalHits;
     renderImg(images.hits);
-    showLoader();
     if (perPage * pageCounter >= totalHits) {
       hideLoadMoreBtn();
       endList();
@@ -110,7 +108,6 @@ function endList() {
     position: 'topRight',
   });
 }
-
 function showLoadMoreBtn() {
   refs.load.style.display = 'block';
 }
