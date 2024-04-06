@@ -8,9 +8,9 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 export const refs = {
   searchForm: document.querySelector('.search-form'),
   inputElement: document.querySelector('.search-input'),
-  loader: document.querySelector('.loader'),
   load: document.querySelector('.load'),
   galleryList: document.querySelector('.gallery'),
+  loader: document.querySelector('.loader')
 };
 
 export const lightbox = new SimpleLightbox('.gallery a', {
@@ -21,15 +21,6 @@ export const lightbox = new SimpleLightbox('.gallery a', {
 let searchTerm;
 let pageCounter = 1;
 const perPage = 15;
-
-const preloader = document.querySelector('.loader');
-const showLoader = () => {
-  preloader.classList.remove('hidden');
-};
-
-const hideLoader = () => {
-  preloader.classList.add('hidden');
-};
 
 hideLoader();
 
@@ -46,7 +37,7 @@ async function submitHandle(e) {
       message: 'Please enter a search term.',
       position: 'topRight',
     });
-    hideLoadMoreBtn();
+    hideLoader();
     return;
   }
   showLoader();
@@ -126,4 +117,12 @@ function showLoadMoreBtn() {
 
 function hideLoadMoreBtn() {
   refs.load.style.display = 'none';
+}
+
+function showLoader() {
+  refs.loader.classList.remove('hidden');
+}
+
+function hideLoader() {
+  refs.loader.classList.add('hidden');
 }
