@@ -83,11 +83,11 @@ async function submitHandle(e) {
     hideLoader();
   }
 }
-  refs.loader.addEventListener('click', async () => {
+refs.loader.addEventListener('click', async () => {
   try {
     if (refs.load) {
       pageCounter += 1;
-      showLoader()
+      showLoader();
     }
     const images = await fetchImg(searchTerm, pageCounter, perPage);
     const totalHits = images.totalHits;
