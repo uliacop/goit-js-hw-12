@@ -20,24 +20,26 @@ export const lightbox = new SimpleLightbox('.gallery a', {
 
 let searchTerm;
 let pageCounter = 1;
-  const perPage = 15;
+const perPage = 15;
 
 const preloader = document.querySelector('.loader');
 const showLoader = () => {
   preloader.classList.remove('hidden');
 };
+
 const hideLoader = () => {
   preloader.classList.add('hidden');
 };
+
 hideLoader();
+
 refs.searchForm.addEventListener('submit', submitHandle);
-async function submitHandle(event) {
-  event.preventDefault();
+
+async function submitHandle(e) {
+  e.preventDefault();
   searchTerm = refs.inputElement.value.trim();
   pageCounter = 1;
-
-  refs. galleryList.innerHTML = '';
-
+  refs.galleryList.innerHTML = '';
   if (searchTerm === '') {
     iziToast.error({
       title: 'Error',
@@ -45,17 +47,12 @@ async function submitHandle(event) {
       position: 'topRight',
     });
     hideLoadMoreBtn();
-
     return;
   }
-
-  endList();
-
   showLoader();
   try {
     const images = await fetchImg(searchTerm, pageCounter, perPage);
     const totalHits = images.totalHits;
-
     if (images.hits.length === 0) {
       refs.galleryList.innerHTML = '';
       iziToast.info({
@@ -73,7 +70,7 @@ async function submitHandle(event) {
     }
     if (perPage * pageCounter >= totalHits) {
       hideLoadMoreBtn();
-      showEndOfCollectionMessage();
+      endList();
     }
   } catch (error) {
     console.error('Error fetching images:', error);
@@ -94,14 +91,12 @@ refs.load.addEventListener('click', async () => {
     }
     const images = await fetchImg(searchTerm, pageCounter, perPage);
     const totalHits = images.totalHits;
-
     renderImg(images.hits);
     showLoader();
     if (perPage * pageCounter >= totalHits) {
       hideLoadMoreBtn();
-      showEndOfCollectionMessage();
+      endList();
     }
-
     const galleryCardHeight =
       refs.galleryList.firstElementChild.getBoundingClientRect().height;
     window.scrollBy({ top: galleryCardHeight * 3, behavior: 'smooth' });
@@ -115,7 +110,9 @@ refs.load.addEventListener('click', async () => {
     hideLoader();
   }
 });
+
 function endList() {
+  hideLoadMoreBtn();
   iziToast.error({
     title: 'Error',
     message: "We're sorry, but you've reached the end of search results.",
@@ -130,5 +127,3 @@ function showLoadMoreBtn() {
 function hideLoadMoreBtn() {
   refs.load.style.display = 'none';
 }
-
-
