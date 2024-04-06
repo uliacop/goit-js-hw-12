@@ -24,7 +24,6 @@ let pageCounter = 1;
 const perPage = 15;
 
 refs.searchForm.addEventListener('submit', submitHandle);
-
 async function submitHandle(e) {
   e.preventDefault();
   searchTerm = refs.inputElement.value.trim();
@@ -79,6 +78,7 @@ refs.load.addEventListener('click', async () => {
     if (refs.load) {
       pageCounter += 1;
     }
+    showLoader();
     const images = await fetchImg(searchTerm, pageCounter, perPage);
     const totalHits = images.totalHits;
     renderImg(images.hits);
@@ -99,6 +99,7 @@ refs.load.addEventListener('click', async () => {
     hideLoader();
   }
 });
+
 
 function endList() {
   hideLoadMoreBtn();
