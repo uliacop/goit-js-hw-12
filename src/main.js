@@ -39,6 +39,7 @@ async function submitHandle(e) {
   e.preventDefault();
   searchTerm = refs.inputElement.value.trim();
   pageCounter = 1;
+  showLoader();
   refs.galleryList.innerHTML = '';
   if (searchTerm === '') {
     iziToast.error({
