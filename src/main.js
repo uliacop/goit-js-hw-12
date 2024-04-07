@@ -17,8 +17,8 @@ export const lightbox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
   captionDelay: 250,
 });
-/*
-hideLoader(); */
+
+hideLoader();
 let searchTerm;
 let pageCounter = 1;
 const perPage = 15;
@@ -35,13 +35,11 @@ async function submitHandle(e) {
       message: 'Please enter a search term.',
       position: 'topRight',
     });
-/* hideLoadMoreBtn(); */
+hideLoadMoreBtn();
     return;
   }
 
-/*  endList(); */
-
- /*  showLoader(); */
+  showLoader();
   try {
     const images = await fetchImg(searchTerm, pageCounter, perPage);
     const totalHits = images.totalHits;
@@ -53,16 +51,18 @@ async function submitHandle(e) {
           'Sorry, there are no images matching your search query. Please try again!',
         position: 'topRight',
       });
-    /*   hideLoadMoreBtn(); */
+      hideLoadMoreBtn();
       return;
     } else {
       renderImg(images.hits);
       refs.inputElement.value = '';
 
+       showLoadMoreBtn();
+       console.log(showLoadMoreBtn())
     }
     if (perPage * pageCounter >= totalHits) {
-     /*  hideLoadMoreBtn();
-      endList(); */
+      hideLoadMoreBtn();
+      endList();
     }
   } catch (error) {
     console.error('Error fetching images:', error);
@@ -72,7 +72,7 @@ async function submitHandle(e) {
       position: 'topRight',
     });
   } finally {
-    /* hideLoader(); */
+    hideLoader();
   }
 }
 
@@ -84,13 +84,12 @@ refs.load.addEventListener('click', async () => {
     const images = await fetchImg(searchTerm, pageCounter, perPage);
     const totalHits = images.totalHits;
     renderImg(images.hits);
-    showLoadMoreBtn();
-/* showLoader(); */
+    showLoader();
+
     if (perPage * pageCounter >= totalHits) {
-     /*  hideLoadMoreBtn(); */
+     hideLoadMoreBtn();
 
-      /* endList(); */
-
+       endList();
 
     }
     const galleryCardHeight =
@@ -103,28 +102,26 @@ refs.load.addEventListener('click', async () => {
       message: `Error fetching more images: ${error}`,
     });
   } finally {
-   /*  hideLoader(); */
+    hideLoader();
 
   }
 });
 
 function showLoader() {
-  refs.loader.removeAttribute('hidden');
+  refs.loader.classList.remove('hidden');
 }
 
 function hideLoader() {
-  refs.loader.setAttribute('hidden', 'true');
+  refs.loader.classList.add('hidden');
 }
 
 function showLoadMoreBtn() {
-  refs. load.removeAttribute('disabled');
+  refs.load.style.display = 'block';
 }
-
 
 function hideLoadMoreBtn() {
-  refs.load.setAttribute('disabled', 'disabled');
+  refs.load.style.display = 'none';
 }
-
 
   function endList() {
   hideLoadMoreBtn();
@@ -134,3 +131,5 @@ function hideLoadMoreBtn() {
     position: 'topRight',
   });
 }
+
+
