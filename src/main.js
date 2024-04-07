@@ -55,9 +55,7 @@ async function submitHandle(e) {
     } else {
       renderImg(images.hits);
       refs.inputElement.value = '';
-
       showLoadMoreBtn();
-      console.log(showLoadMoreBtn());
     }
     if (perPage * pageCounter >= totalHits) {
       hideLoadMoreBtn();
