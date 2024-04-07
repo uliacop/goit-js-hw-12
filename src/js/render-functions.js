@@ -30,3 +30,4 @@ export function renderImg(arr) {
     lightbox.refresh();
   }
 }
+

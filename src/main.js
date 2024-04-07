@@ -1,5 +1,5 @@
 import { fetchImg } from './js/pixabay-api';
-import { renderImg } from './js/render-functions';
+ import { renderImg} from './js/render-functions';
 import SimpleLightbox from 'simplelightbox';
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
@@ -35,9 +35,10 @@ async function submitHandle(e) {
       message: 'Please enter a search term.',
       position: 'topRight',
     });
-    hideLoader();
+hideLoadMoreBtn();
     return;
   }
+ endList();
   showLoader();
   try {
     const images = await fetchImg(searchTerm, pageCounter, perPage);
@@ -59,7 +60,7 @@ async function submitHandle(e) {
     }
     if (perPage * pageCounter >= totalHits) {
       hideLoadMoreBtn();
-      endList();
+      showEndOfCollectionMessage();
     }
   } catch (error) {
     console.error('Error fetching images:', error);
@@ -78,13 +79,13 @@ refs.load.addEventListener('click', async () => {
     if (refs.load) {
       pageCounter += 1;
     }
-    showLoader();
     const images = await fetchImg(searchTerm, pageCounter, perPage);
     const totalHits = images.totalHits;
     renderImg(images.hits);
+showLoader();
     if (perPage * pageCounter >= totalHits) {
       hideLoadMoreBtn();
-      endList();
+      showEndOfCollectionMessage();
     }
     const galleryCardHeight =
       refs.galleryList.firstElementChild.getBoundingClientRect().height;
@@ -100,6 +101,22 @@ refs.load.addEventListener('click', async () => {
   }
 });
 
+function showLoader() {
+  refs.loader.classList.remove('hidden');
+}
+
+function hideLoader() {
+  refs.loader.classList.add('hidden');
+}
+
+function showLoadMoreBtn() {
+  refs.load.style.display = 'block';
+}
+
+function hideLoadMoreBtn() {
+  refs.load.style.display = 'none';
+}
+
 
 function endList() {
   hideLoadMoreBtn();
@@ -109,18 +126,4 @@ function endList() {
     position: 'topRight',
   });
 }
-function showLoadMoreBtn() {
-  refs.load.style.display = 'block';
-}
 
-function hideLoadMoreBtn() {
-  refs.load.style.display = 'none';
-}
-
-function showLoader() {
-  refs.loader.classList.remove('hidden');
-}
-
-function hideLoader() {
-  refs.loader.classList.add('hidden');
-}
