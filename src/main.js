@@ -17,8 +17,8 @@ export const lightbox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
   captionDelay: 250,
 });
-
-hideLoader();
+/*
+hideLoader(); */
 let searchTerm;
 let pageCounter = 1;
 const perPage = 15;
@@ -35,11 +35,13 @@ async function submitHandle(e) {
       message: 'Please enter a search term.',
       position: 'topRight',
     });
-hideLoadMoreBtn();
+/* hideLoadMoreBtn(); */
     return;
   }
- endList();
-  showLoader();
+
+/*  endList(); */
+
+ /*  showLoader(); */
   try {
     const images = await fetchImg(searchTerm, pageCounter, perPage);
     const totalHits = images.totalHits;
@@ -51,16 +53,16 @@ hideLoadMoreBtn();
           'Sorry, there are no images matching your search query. Please try again!',
         position: 'topRight',
       });
-      hideLoadMoreBtn();
+    /*   hideLoadMoreBtn(); */
       return;
     } else {
       renderImg(images.hits);
       refs.inputElement.value = '';
-      showLoadMoreBtn();
+
     }
     if (perPage * pageCounter >= totalHits) {
-      hideLoadMoreBtn();
-      showEndOfCollectionMessage();
+     /*  hideLoadMoreBtn();
+      endList(); */
     }
   } catch (error) {
     console.error('Error fetching images:', error);
@@ -70,7 +72,7 @@ hideLoadMoreBtn();
       position: 'topRight',
     });
   } finally {
-    hideLoader();
+    /* hideLoader(); */
   }
 }
 
@@ -82,10 +84,14 @@ refs.load.addEventListener('click', async () => {
     const images = await fetchImg(searchTerm, pageCounter, perPage);
     const totalHits = images.totalHits;
     renderImg(images.hits);
-showLoader();
+    showLoadMoreBtn();
+/* showLoader(); */
     if (perPage * pageCounter >= totalHits) {
-      hideLoadMoreBtn();
-      showEndOfCollectionMessage();
+     /*  hideLoadMoreBtn(); */
+
+      /* endList(); */
+
+
     }
     const galleryCardHeight =
       refs.galleryList.firstElementChild.getBoundingClientRect().height;
@@ -97,28 +103,30 @@ showLoader();
       message: `Error fetching more images: ${error}`,
     });
   } finally {
-    hideLoader();
+   /*  hideLoader(); */
+
   }
 });
 
 function showLoader() {
-  refs.loader.classList.remove('hidden');
+  refs.loader.removeAttribute('hidden');
 }
 
 function hideLoader() {
-  refs.loader.classList.add('hidden');
+  refs.loader.setAttribute('hidden', 'true');
 }
 
 function showLoadMoreBtn() {
-  refs.load.style.display = 'block';
+  refs. load.removeAttribute('disabled');
 }
+
 
 function hideLoadMoreBtn() {
-  refs.load.style.display = 'none';
+  refs.load.setAttribute('disabled', 'disabled');
 }
 
 
-function endList() {
+  function endList() {
   hideLoadMoreBtn();
   iziToast.error({
     title: 'Error',
@@ -126,4 +134,3 @@ function endList() {
     position: 'topRight',
   });
 }
-
