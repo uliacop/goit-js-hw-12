@@ -1,5 +1,5 @@
 import { fetchImg } from './js/pixabay-api';
- import { renderImg} from './js/render-functions';
+import { renderImg } from './js/render-functions';
 import SimpleLightbox from 'simplelightbox';
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
@@ -35,10 +35,9 @@ async function submitHandle(e) {
       message: 'Please enter a search term.',
       position: 'topRight',
     });
-hideLoadMoreBtn();
+    hideLoadMoreBtn();
     return;
   }
-
   showLoader();
   try {
     const images = await fetchImg(searchTerm, pageCounter, perPage);
@@ -57,8 +56,8 @@ hideLoadMoreBtn();
       renderImg(images.hits);
       refs.inputElement.value = '';
 
-       showLoadMoreBtn();
-       console.log(showLoadMoreBtn())
+      showLoadMoreBtn();
+      console.log(showLoadMoreBtn());
     }
     if (perPage * pageCounter >= totalHits) {
       hideLoadMoreBtn();
@@ -85,12 +84,9 @@ refs.load.addEventListener('click', async () => {
     const totalHits = images.totalHits;
     renderImg(images.hits);
     showLoader();
-
     if (perPage * pageCounter >= totalHits) {
-     hideLoadMoreBtn();
-
-       endList();
-
+      hideLoadMoreBtn();
+      endList();
     }
     const galleryCardHeight =
       refs.galleryList.firstElementChild.getBoundingClientRect().height;
@@ -103,7 +99,6 @@ refs.load.addEventListener('click', async () => {
     });
   } finally {
     hideLoader();
-
   }
 });
 
@@ -123,7 +118,7 @@ function hideLoadMoreBtn() {
   refs.load.style.display = 'none';
 }
 
-  function endList() {
+function endList() {
   hideLoadMoreBtn();
   iziToast.error({
     title: 'Error',
@@ -131,5 +126,3 @@ function hideLoadMoreBtn() {
     position: 'topRight',
   });
 }
-
-
